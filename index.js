@@ -8,25 +8,23 @@ import fs from "fs";
 import inquirer from "inquirer";
 import qr from "qr-image";
 
-inquirer
-    .prompt([
-        // Pass your questions in here
-        {
-            message: "Type in your URL: ",
-            name: "URL"
-        }
-    ])
-    .then((answers) => {
-        // Use user feedback for... whatever!!
-        const url = answers.URL;
+document.querySelector(".btn-generate-qr-code").addEventListener("click", () => {
+    let URLinput = document.querySelector(".url-input");
+    generateQRCode(URLinput.value);
+});
+
+function generateQRCode(url) {
+    inquirer
+    .then( () => {
 
         var qrPng = qr.image(url, {type: "png"});
-        qrPng.pipe(fs.createWriteStream("qr_img.png"));
+        qrPng.pipe(fs.createWriteStream("qrcode.png"));
 
-        fs.writeFile("URL.txt", url, (err) => {
+
+        /* fs.writeFile("URL.txt", url, (err) => {
             if (err) throw err;
             console.log("The file has been saved!");
-        });
+        }); */
     })
     .catch((error) => {
         if (error.isTtyError) {
@@ -34,4 +32,5 @@ inquirer
         } else {
             // Something else went wrong
         }
-    })
+    });
+}
